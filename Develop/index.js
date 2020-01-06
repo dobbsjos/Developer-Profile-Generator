@@ -22,12 +22,12 @@ inquirer
         username
     }) {
         const queryUrl = `https://api.github.com/users/${username}/repos?per_page=100`;
-
+        const queryUrl2 = `https://api.github.com/users/${username}`;
         axios.get(queryUrl).then(function (res) {
             const repoNames = res.data.map(function (repo) {
                 return repo.name;
             });
-
+            console.log(res.data);
             const repoNamesStr = repoNames.join("\n");
 
             fs.writeFile("profile.html", repoNamesStr, function (err) {
@@ -37,6 +37,11 @@ inquirer
                 generateHtml();
 
                 console.log(`Saved ${repoNames.length} repos`);
+            });
+        });
+        axios.get(queryUrl2).then(function(res) {
+            const dataInfo = res.data.map(function () {
+                console.log(res.data)
             });
         });
     });
