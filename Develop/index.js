@@ -1,48 +1,60 @@
 const inquirer = require("inquirer");
-const axios = require("axios");
 const electron = require("electron");
 const generateHtml = require("./generateHTML");
 var fs = require('fs'),
     convertFactory = require('electron-html-to');
 require('dotenv').config();
+const api = require("./api");
 
+const questions = [
+    {
+        type: "input",
+        message: "Enter your GitHub username:",
+        name: "userName"
 
+    },
+    {
+        type: "input",
+        message: "What is you favorate color?",
+        name: "color"
+    }
+]
 inquirer
-    .prompt([{
-            message: "Enter your GitHub username:",
-            name: "username"
-
-        },
-        {
-            message: "What is you favorate color?",
-            name: "color"
-        }
-    ])
-    .then(function ({
-        username
-    }) {
-        const queryUrl = `https://api.github.com/users/${username}/repos?per_page=100`;
-        const queryUrl2 = `https://api.github.com/users/${username}`;
-        axios.get(queryUrl).then(function (res) {
-            const repoNames = res.data.map(function (repo) {
-                return repo.name;
+    .prompt(questions)
+    .then(function (answer)
+     {
+         console.log(answer);
+         const color = answer.color;
+         const userName = answer.userName;
+        api.retrieveUser(userName)
+        .then(function(data) {
+            api.getUserStars(userName) 
+            .then(function(stars) {
+                return generateHtml({
+                    stars, 
+                    color,
+                    ...data
+                });
+            })
+            .catch(function (err) {
+                console.log(err);
+                process.exit(1);
             });
-            console.log(res.data);
-            const repoNamesStr = repoNames.join("\n");
-
-            fs.writeFile("profile.html", repoNamesStr, function (err) {
+        })
+        .then(function(html) {
+            const convert = convertFactory({
+                converterPath: convertFactory.converters.PDF
+            });
+            convert({html}, function(err, res){
                 if (err) {
                     throw err;
                 }
-                generateHtml();
+                res.stream.pipe(
+                    fs.createWriteStream(path.join(__dirname, "resume.pdf"))
+                );
+                convert.kill();
+            });
+            open(path.join(process.cwd(), "resume.pdf"));
+        });
 
-                console.log(`Saved ${repoNames.length} repos`);
-            });
-        });
-        axios.get(queryUrl2).then(function(res) {
-            const dataInfo = res.data.map(function () {
-                console.log(res.data)
-            });
-        });
     });
-    
