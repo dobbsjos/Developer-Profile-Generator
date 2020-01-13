@@ -175,28 +175,28 @@ function generateHTML(data) {
    <body>
       <div class="wrapper">
          <div class="photo-header">
-            <img src="${data.avatar_url}" alt="Photo of ${data.name}" />
+            <img src="${data.data.avatar_url}" alt="Photo of ${data.data.name}" />
             <h1>Hi!</h1>
             <h2>
-            My name is ${data.name}!</h1>
-            <h5>${data.company ? `Currently @ ${data.company}` : ""}</h5>
+            My name is ${data.data.name}!</h1>
+            <h5>${data.data.company ? `Currently @ ${data.data.company}` : ""}</h5>
             <nav class="links-nav">
                ${
-                 data.location
+                 data.data.location
                    ? `<a class="nav-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/place/${
-                       data.location
+                       data.data.location
                      }"><i class="fas fa-location-arrow"></i> ${
-                       data.location
+                       data.data.location
                      }</a>`
                    : ""
                }
                <a class="nav-link" target="_blank" rel="noopener noreferrer" href="${
-                 data.html_url
+                 data.data.html_url
                }"><i class="fab fa-github-alt"></i> GitHub</a>
                ${
-                 data.blog
+                 data.data.blog
                    ? `<a class="nav-link" target="_blank" rel="noopener noreferrer" href="${
-                       data.blog
+                       data.data.blog
                      }"><i class="fas fa-rss"></i> Blog</a>`
                    : ""
                }
@@ -206,20 +206,20 @@ function generateHTML(data) {
             <div class="container">
             <div class="row">
                <div class="col">
-                  <h3>${data.bio ? `${data.bio}` : ""}</h3>
+                  <h3>${data.data.bio ? `${data.data.bio}` : ""}</h3>
                </div>
                </div>
                <div class="row">
                <div class="col">
                   <div class="card">
                     <h3>Public Repositories</h3>
-                    <h4>${data.public_repos}</h4>
+                    <h4>${data.data.public_repos}</h4>
                   </div>
                </div>
                 <div class="col">
                 <div class="card">
                   <h3>Followers</h3>
-                  <h4>${data.followers}</h4>
+                  <h4>${data.data.followers}</h4>
                 </div>
                </div>
                </div>
@@ -233,7 +233,7 @@ function generateHTML(data) {
                 <div class="col">
                 <div class="card">
                   <h3>Following</h3>
-                  <h4>${data.following}</h4>
+                  <h4>${data.data.following}</h4>
                   </div>
                </div>
                </div>

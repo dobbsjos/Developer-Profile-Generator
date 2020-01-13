@@ -18,10 +18,11 @@ const api = {
                 }, 0);
             console.log(totalStars);
             return totalStars;
-        }).catch(function (err) {
-            console.log(err);
-            process.exit(1);
-        });
+        })
+        // .catch(function (err) {
+        //     console.log(err);
+        //     process.exit(1);
+        // });
         
     }
 };
